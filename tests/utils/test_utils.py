@@ -1,5 +1,5 @@
 from faker.utils.loading import find_available_locales
-from faker.utils.distribution import choice_distribution
+from faker.utils.distribution import choices_distribution
 from faker.utils.datasets import add_dicts
 from faker.config import PROVIDERS
 from faker.generator import random
@@ -18,7 +18,7 @@ class UtilsTestCase(unittest.TestCase):
         a = ('a', 'b', 'c', 'd')
         p = (0.5, 0.2, 0.2, 0.1)
 
-        sample = choice_distribution(a, p)
+        sample = choices_distribution(a, p)[0]
         self.assertTrue(sample in a)
 
         with open(os.path.join(TEST_DIR, 'random_state.json'), 'r') as fh:
@@ -26,7 +26,7 @@ class UtilsTestCase(unittest.TestCase):
         random_state[1] = tuple(random_state[1])
 
         random.setstate(random_state)
-        samples = [choice_distribution(a, p) for i in range(100)]
+        samples = choices_distribution(a, p, length=100)
         a_pop = len([i for i in samples if i == 'a'])
         b_pop = len([i for i in samples if i == 'b'])
         c_pop = len([i for i in samples if i == 'c'])
