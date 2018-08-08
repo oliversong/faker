@@ -135,9 +135,7 @@ class BaseProvider(object):
     def random_sample_unique(self, elements=('a', 'b', 'c'), length=None):
         """
         Returns a `set` of random unique elements for the specified length.
-        Multiple occurances of the same value increase its probabilty to be in the output.
         """
-        elements = Counter(elements)
         if length is None:
             length = self.generator.random.randint(1, len(elements))
 
@@ -145,10 +143,8 @@ class BaseProvider(object):
             raise ValueError(
                 "Sample length cannot be longer than the number of unique elements to pick from.")
         sample = set()
-        for _ in range(length):
-            element = self.random_element(elements)
-            sample.add(element)
-            elements.pop(element)
+        while len(sample) < length:
+            sample.add(self.random_element(elements))
         return sample
 
     def randomize_nb_elements(

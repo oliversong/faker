@@ -6,6 +6,7 @@ import re
 import unittest
 import string
 import sys
+import timeout_decorator
 from ipaddress import ip_address, ip_network
 
 import logging
@@ -580,6 +581,7 @@ class FactoryTestCase(unittest.TestCase):
                 re.compile(r'^([0-9a-f]{0,4}:){2,7}[0-9a-f]{0,4}/\d{1,3}$').search(
                     address))
 
+    @timeout_decorator.timeout(3)
     def test_random_sample_unique(self):
         from faker.providers import BaseProvider
         provider = BaseProvider(self.generator)
